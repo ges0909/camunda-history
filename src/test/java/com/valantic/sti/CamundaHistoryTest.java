@@ -1,12 +1,11 @@
 package com.valantic.sti;
 
-import io.restassured.RestAssured;
-import io.restassured.config.LogConfig;
-import io.restassured.filter.log.LogDetail;
+import io.restassured.filter.log.ErrorLoggingFilter;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,7 @@ import static org.hamcrest.Matchers.greaterThan;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CamundaHistoryTest {
 
-    static int CAMUNDA_PORT = 8080;
+    static int CAMUNDA_PORT = 18080;
     static RequestSpecification REQUEST_SPEC;
 
     @BeforeAll
@@ -32,9 +31,10 @@ class CamundaHistoryTest {
                 .baseUri("http://localhost:" + CAMUNDA_PORT)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .config(
-                        RestAssured.config().logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL))
-                );
+                // .config(RestAssured.config().logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL)))
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
+                .filter(new ErrorLoggingFilter());
     }
 
     @Test
@@ -90,7 +90,7 @@ class CamundaHistoryTest {
                 .body("id", notNullValue());
     }
 
-    @Disabled("too slow")
+    // @Disabled("too slow")
     @Test
     @Order(5)
     void testStartMultipleBpmnProcessInstance() {

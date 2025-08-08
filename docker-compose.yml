@@ -1,13 +1,12 @@
 services:
   camunda:
-    # image: camunda/camunda-bpm-platform:7.19.0
-    image: camunda/camunda-bpm-platform:7.10.0
+    build: .
     container_name: camunda
     ports:
       - "8080:8080"
     environment:
       - DB_DRIVER=org.mariadb.jdbc.Driver
-      - DB_URL=jdbc:mariadb://db:3306/camunda
+      - DB_URL=jdbc:mariadb://mariadb:3306/camunda
       - DB_USERNAME=camunda
       - DB_PASSWORD=camunda
     depends_on:

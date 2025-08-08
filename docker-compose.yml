@@ -1,0 +1,31 @@
+services:
+  camunda:
+    # image: camunda/camunda-bpm-platform:7.19.0
+    image: camunda/camunda-bpm-platform:7.10.0
+    container_name: camunda
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_DRIVER=org.mariadb.jdbc.Driver
+      - DB_URL=jdbc:mariadb://db:3306/camunda
+      - DB_USERNAME=camunda
+      - DB_PASSWORD=camunda
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:10.11
+    container_name: mariadb
+    restart: always
+    environment:
+      MARIADB_DATABASE: camunda
+      MARIADB_USER: camunda
+      MARIADB_PASSWORD: camunda
+      MARIADB_ROOT_PASSWORD: root
+    ports:
+      - "13306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+volumes:
+  mariadb-data:

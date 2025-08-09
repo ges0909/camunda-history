@@ -18,10 +18,10 @@
 | Camunda Engine | Docker container |
 | Database       | Docker container |
 
-   ```bash
-   docker compose up -d
-   ./mvnw test -Dtest=DockerizedCamundaEngineTest
-   docker compose down -v
+```bash
+docker compose up -d
+./mvnw test -Dtest=DockerizedCamundaEngineTest
+docker compose down -v
    ```
 
 ## Embedded
@@ -31,16 +31,16 @@
 | Camunda Engine | Embedded as JAR  |
 | Database       | Docker container |
 
-   ```bash
-   docker-compose up -d mariadb
-   until docker-compose exec mariadb mysqladmin ping -h localhost --silent
-     do echo "Waiting for MariaDB..."
-     sleep 2
-   done
-   echo "MariaDB is ready!"
-   ./mvnw test -Dtest=EmbeddedCamundaEngineTest
-   docker compose down -v
-   ```
+```bash
+docker-compose up -d mariadb
+until docker-compose exec mariadb mysqladmin ping -h localhost --silent
+  do echo "Waiting for MariaDB..."
+  sleep 2
+done
+echo "MariaDB is ready!"
+./mvnw test -Dtest=EmbeddedCamundaEngineTest
+docker compose down -v
+```
 
 ## Erkenntnisse
 

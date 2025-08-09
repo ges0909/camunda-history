@@ -22,7 +22,7 @@
         <camunda.bpmn.assert.version>15.0.0</camunda.bpmn.assert.version>
         <rest-assured.version>5.5.5</rest-assured.version>
         <jackson.version>2.20.0-rc1</jackson.version>
-        <slf4j.version>2.1.0-alpha1</slf4j.version>
+        <logback.version>1.5.18</logback.version>
         <testcontainers.version>1.21.3</testcontainers.version>
     </properties>
 
@@ -81,11 +81,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- SLF4J (optional logging) -->
+        <!-- Logback for better formatting -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -122,6 +122,13 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
+            </plugin>
+
+            <!-- Versions Plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.16.2</version>
             </plugin>
         </plugins>
     </build>

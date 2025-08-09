@@ -24,6 +24,7 @@
         <jackson.version>2.20.0-rc1</jackson.version>
         <logback.version>1.5.18</logback.version>
         <testcontainers.version>1.21.3</testcontainers.version>
+        <jmh.version>1.37</jmh.version>
     </properties>
 
     <dependencies>
@@ -104,6 +105,21 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Benchmarking with JMH -->
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${jmh.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -115,6 +131,14 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
+                    <!-- JMH Plugin -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.openjdk.jmh</groupId>
+                            <artifactId>jmh-generator-annprocess</artifactId>
+                            <version>1.37</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
@@ -130,6 +154,8 @@
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.16.2</version>
             </plugin>
+            
         </plugins>
+
     </build>
 </project>

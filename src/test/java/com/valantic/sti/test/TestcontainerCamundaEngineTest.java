@@ -1,4 +1,4 @@
-package com.valantic.sti;
+package com.valantic.sti.test;
 
 import io.restassured.filter.log.ErrorLoggingFilter;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -6,6 +6,10 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.io.File;
 import java.util.Map;
@@ -16,22 +20,31 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class DockerizedCamundaEngineTest {
+@Testcontainers
+class TestcontainerCamundaEngineTest {
 
-    static int CAMUNDA_PORT = 18080;
+    @Container
+    static GenericContainer<?> camundaContainer = new GenericContainer<>(DockerImageName.parse("camunda/camunda-bpm-platform:7.10.0"))
+            .withExposedPorts(8080);
+
     static RequestSpecification REQUEST_SPEC;
 
     @BeforeAll
     static void setUp() {
+        String baseUri = "http://localhost:" + camundaContainer.getMappedPort(8080);
         REQUEST_SPEC = given()
-                .baseUri("http://localhost:" + CAMUNDA_PORT)
+                .baseUri(baseUri)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                // .config(RestAssured.config().logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL)))
                 .filters(
                         new RequestLoggingFilter(),
                         new ResponseLoggingFilter(),
                         new ErrorLoggingFilter());
+    }
+
+    @AfterAll
+    static void tearDown() {
+        camundaContainer.stop();
     }
 
     @Test

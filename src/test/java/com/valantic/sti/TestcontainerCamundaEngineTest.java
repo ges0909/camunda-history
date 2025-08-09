@@ -42,6 +42,11 @@ class TestcontainerCamundaEngineTest {
                         new ErrorLoggingFilter());
     }
 
+    @AfterAll
+    static void tearDown() {
+        camundaContainer.stop();
+    }
+    
     @Test
     @Order(1)
     void testCamundaConnection() {

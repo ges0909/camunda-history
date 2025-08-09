@@ -31,6 +31,8 @@ public class EmbeddedCamundaEngineTest {
         configuration.setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
         // Mostly deactivated for tests
         configuration.setJobExecutorActivate(false);
+        // Set history level
+        configuration.setHistory(ProcessEngineConfiguration.HISTORY_FULL);
         // Start the process engine
         processEngine = configuration.buildProcessEngine();
 

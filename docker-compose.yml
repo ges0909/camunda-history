@@ -9,8 +9,10 @@ services:
       - DB_URL=jdbc:mariadb://mariadb:3306/camunda
       - DB_USERNAME=camunda
       - DB_PASSWORD=camunda
+      - CAMUNDA_BPM_HISTORY_LEVEL=audit
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
 
   mariadb:
     image: mariadb:10.11
@@ -25,6 +27,12 @@ services:
       - "13306:3306"
     volumes:
       - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
 volumes:
   mariadb-data:

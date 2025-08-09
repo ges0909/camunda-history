@@ -14,6 +14,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.version>3.9.9</maven.version>
         <!-- dependency versions -->
         <camunda.version>7.10.0</camunda.version>
         <mariadb.version>3.5.5</mariadb.version>
@@ -25,6 +26,11 @@
         <logback.version>1.5.18</logback.version>
         <testcontainers.version>1.21.3</testcontainers.version>
         <jmh.version>1.37</jmh.version>
+        <!-- plugin versions -->
+        <maven-compiler-plugin.version>4.0.0-beta-2</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
+        <maven-versions-plugin.version>2.18.0</maven-versions-plugin.version>
+        <maven-enforcer-plugin.version>3.6.1</maven-enforcer-plugin.version>
     </properties>
 
     <dependencies>
@@ -40,6 +46,14 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <version>${mariadb.version}</version>
+        </dependency>
+
+        <!-- Logback for better formatting -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- JUnit 5 -->
@@ -66,7 +80,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Rest Assured, to write REST tests against Camunda -->
+        <!-- Rest Assured, to write REST tests against external camunda engine -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -79,14 +93,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Logback for better formatting -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -119,7 +125,6 @@
             <version>${jmh.version}</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -127,7 +132,7 @@
             <!-- Compiler Plugin -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -145,16 +150,37 @@
             <!-- Surefire Plugin for JUnit 5 -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
 
             <!-- Versions Plugin -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.16.2</version>
+                <version>${maven-versions-plugin.version}</version>
             </plugin>
-            
+
+            <!-- Maven Enforcer Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[${maven.version},)</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
     </build>

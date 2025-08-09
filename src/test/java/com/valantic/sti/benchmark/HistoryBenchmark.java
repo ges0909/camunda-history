@@ -11,15 +11,20 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-@State(Scope.Thread)
+@State(Scope.Benchmark)
 public class HistoryBenchmark {
 
-    private ProcessEngine processEngine;
-    private RepositoryService repositoryService;
-    private RuntimeService runtimeService;
+    ProcessEngine processEngine;
+    RepositoryService repositoryService;
+    RuntimeService runtimeService;
 
     @Setup(Level.Trial)
-    public void setup() {
+    public void setupAll() {
+        setupEngine();
+        setupBpmnModel();
+    }
+
+    private void setupEngine() {
         ProcessEngineConfiguration configuration = ProcessEngineConfiguration
                 .createStandaloneProcessEngineConfiguration();
         // Configure database
@@ -40,9 +45,19 @@ public class HistoryBenchmark {
         runtimeService = processEngine.getRuntimeService();
     }
 
+    private void setupBpmnModel() {
+        // Deploy BPMN model
+        repositoryService
+                .createDeployment()
+                .addClasspathResource("test-process.bpmn")
+                .deploy();
+    }
+
     @TearDown(Level.Trial)
     public void teardown() {
-        processEngine.close();
+        if (processEngine != null) {
+            processEngine.close();
+        }
     }
 
     /*
@@ -50,11 +65,6 @@ public class HistoryBenchmark {
      */
     @Benchmark
     public void benchmarkStartBpmnProcess() {
-        // Deploy BPMN model
-        repositoryService
-                .createDeployment()
-                .addClasspathResource("test-process.bpmn")
-                .deploy();
         // Start process
         ProcessInstance instance = runtimeService
                 .startProcessInstanceByKey("testProcess");

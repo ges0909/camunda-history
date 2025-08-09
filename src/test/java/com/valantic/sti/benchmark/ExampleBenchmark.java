@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 @State(Scope.Thread)                    // 🧵 Zustand pro Thread
 public class ExampleBenchmark {
 
-    private List<Integer> testData;
+    List<Integer> testData;
 
     @Setup(Level.Iteration)             // 🔧 Vor jedem Durchlauf
     public void setup() {

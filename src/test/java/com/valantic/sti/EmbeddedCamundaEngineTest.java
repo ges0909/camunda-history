@@ -1,4 +1,4 @@
-package com.valantic.sti.test;
+package com.valantic.sti;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;

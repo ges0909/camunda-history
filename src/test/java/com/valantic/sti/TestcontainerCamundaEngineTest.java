@@ -1,4 +1,4 @@
-package com.valantic.sti.test;
+package com.valantic.sti;
 
 import io.restassured.filter.log.ErrorLoggingFilter;
 import io.restassured.filter.log.RequestLoggingFilter;

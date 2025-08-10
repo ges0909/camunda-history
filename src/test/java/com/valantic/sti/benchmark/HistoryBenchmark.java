@@ -19,9 +19,16 @@ public class HistoryBenchmark {
     RuntimeService runtimeService;
 
     @Setup(Level.Trial)
-    public void setupAll() {
+    public void setup() {
         setupEngine();
-        setupBpmnModel();
+        deployModel();
+    }
+
+    @TearDown(Level.Trial)
+    public void teardown() {
+        if (processEngine != null) {
+            processEngine.close();
+        }
     }
 
     private void setupEngine() {
@@ -45,7 +52,7 @@ public class HistoryBenchmark {
         runtimeService = processEngine.getRuntimeService();
     }
 
-    private void setupBpmnModel() {
+    private void deployModel() {
         // Deploy BPMN model
         repositoryService
                 .createDeployment()
@@ -53,18 +60,8 @@ public class HistoryBenchmark {
                 .deploy();
     }
 
-    @TearDown(Level.Trial)
-    public void teardown() {
-        if (processEngine != null) {
-            processEngine.close();
-        }
-    }
-
-    /*
-     * docker-compose up -d mariadb
-     */
     @Benchmark
-    public void benchmarkStartBpmnProcess() {
+    public void benchmarkStartProcess() {
         // Start process
         ProcessInstance instance = runtimeService
                 .startProcessInstanceByKey("testProcess");

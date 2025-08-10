@@ -64,6 +64,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- JUnit 5 Parameterized Tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- AssertJ, required by Camunda Assert -->
         <dependency>
             <groupId>org.assertj</groupId>
@@ -144,6 +152,11 @@
                             <version>1.37</version>
                         </path>
                     </annotationProcessorPaths>
+                    <basedir/>
+                    <mainOutputDirectory/>
+                    <mojoStatusPath/>
+                    <outputDirectory/>
+                    <projectArtifact/>
                 </configuration>
             </plugin>
 

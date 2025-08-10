@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.valantic.sti.mapper.TestMapper">
+
+    <select id="findLastHistoricTask" resultType="map">
+        SELECT ID_, NAME_, ASSIGNEE_, END_TIME_
+        FROM ACT_HI_TASKINST
+        WHERE END_TIME_ IS NOT NULL
+        ORDER BY END_TIME_ DESC
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+</mapper>

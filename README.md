@@ -42,6 +42,12 @@ echo "MariaDB is ready!"
 docker compose down -v
 ```
 
+## Docker
+
+```bash
+docker compose exec mariadb bash
+```
+
 ## Erkenntnisse
 
 camunda/camunda-bpm-platform:latest:

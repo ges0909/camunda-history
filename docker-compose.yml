@@ -21,10 +21,17 @@ services:
       MARIADB_USER: camunda
       MARIADB_PASSWORD: camunda
       MARIADB_ROOT_PASSWORD: root
+    command: >
+      bash -c "
+        mkdir -p /var/log/mysql &&
+        chown -R mysql:mysql /var/log/mysql &&
+        exec docker-entrypoint.sh mysqld --slow-query-log=1 --slow-query-log-file=/var/log/mysql/slow-query.log --long-query-time=0.1
+      "
     ports:
       - "13306:3306"
     volumes:
       - mariadb-data:/var/lib/mysql
+      - ./logs/mariadb:/var/log/mysql
     healthcheck:
       test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
       interval: 10s

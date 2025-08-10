@@ -84,10 +84,11 @@ public class EmbeddedCamundaEngineTest {
 
     @Test
     void shouldStartAndFinishProcess() {
-        ProcessInstance instance = runtimeService
-                .startProcessInstanceByKey("testProcess");
-        BpmnAwareTests.assertThat(instance).isEnded();
-
+        for (int i = 0; i < 10_000; i++) {
+            ProcessInstance instance = runtimeService
+                    .startProcessInstanceByKey("testProcess");
+            BpmnAwareTests.assertThat(instance).isEnded();
+        }
         // This should be equal 'BpmnAwareTests.assertThat(instance).isEnded()'
         // assertEquals(0, processEngine.getRuntimeService()
         //        .createProcessInstanceQuery()

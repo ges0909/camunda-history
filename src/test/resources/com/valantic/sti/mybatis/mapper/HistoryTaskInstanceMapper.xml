@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.valantic.sti.mapper.TestMapper">
+<mapper namespace="com.valantic.sti.mybatis.mapper.HistoryTaskInstanceMapper">
 
     <select id="findLastHistoricTask" resultType="map">
         SELECT ID_, NAME_, ASSIGNEE_, END_TIME_

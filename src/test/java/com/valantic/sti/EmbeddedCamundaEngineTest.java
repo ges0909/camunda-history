@@ -1,6 +1,6 @@
 package com.valantic.sti;
 
-import com.valantic.sti.mapper.TestMapper;
+import com.valantic.sti.mybatis.mapper.HistoryTaskInstanceMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.camunda.bpm.engine.*;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +33,7 @@ public class EmbeddedCamundaEngineTest {
     SqlSessionFactory sqlSessionFactory;
 
     @BeforeAll
-    void setup() throws IOException {
+    void setup() {
         configureProcessEngine();
         getCamundaServices();
         registerMyBatisSqlMappers();
@@ -69,8 +68,8 @@ public class EmbeddedCamundaEngineTest {
     }
 
     private void registerMyBatisSqlMappers() {
-        sqlSessionFactory.getConfiguration().addMapper(TestMapper.class);
-        // Show all mapped sql statements for debugging
+        sqlSessionFactory.getConfiguration().addMapper(HistoryTaskInstanceMapper.class);
+        // Debugging: Show all mapped sql statements for debugging
         // sqlSessionFactory.getConfiguration().getMappedStatementNames()
         //        .forEach(statementName -> log.info("Mapped statement: {}", statementName));
     }
@@ -100,7 +99,7 @@ public class EmbeddedCamundaEngineTest {
     void shouldFindLastHistoricTask() {
         List<Map<String, Object>> lastHistoricTaskOrFallback;
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            TestMapper testMapper = session.getMapper(TestMapper.class);
+            HistoryTaskInstanceMapper testMapper = session.getMapper(HistoryTaskInstanceMapper.class);
             lastHistoricTaskOrFallback = testMapper.findLastHistoricTask();
             log.info("Found: {}", lastHistoricTaskOrFallback);
         }
@@ -111,6 +110,4 @@ public class EmbeddedCamundaEngineTest {
                 .listPage(0, 1);
         System.out.println(tasks);
     }
-
 }
-

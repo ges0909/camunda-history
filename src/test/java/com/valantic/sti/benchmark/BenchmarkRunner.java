@@ -17,4 +17,3 @@ public class BenchmarkRunner {
         new Runner(options).run();
     }
 }
-

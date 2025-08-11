@@ -1,8 +1,8 @@
-package com.valantic.sti.mapper;
+package com.valantic.sti.mybatis.mapper;
 
 import java.util.List;
 import java.util.Map;
 
-public interface TestMapper {
+public interface HistoryTaskInstanceMapper {
     List<Map<String, Object>> findLastHistoricTask();
 }

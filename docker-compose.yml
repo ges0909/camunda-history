@@ -21,11 +21,12 @@ services:
       MARIADB_USER: camunda
       MARIADB_PASSWORD: camunda
       MARIADB_ROOT_PASSWORD: root
+    # enable database logs
     command: >
       bash -c "
         mkdir -p /var/log/mysql &&
         chown -R mysql:mysql /var/log/mysql &&
-        exec docker-entrypoint.sh mysqld --slow-query-log=1 --slow-query-log-file=/var/log/mysql/slow-query.log --long-query-time=0.1
+        exec docker-entrypoint.sh mysqld --general_log=1 --general_log_file=/var/log/mysql/general.log --slow-query-log=1 --slow-query-log-file=/var/log/mysql/slow-query.log --long-query-time=0.1
       "
     ports:
       - "13306:3306"
